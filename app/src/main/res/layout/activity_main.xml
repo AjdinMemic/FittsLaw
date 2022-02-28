@@ -20,6 +20,16 @@
         tools:layout_editor_absoluteY="121dp" />
 
     <Button
+        android:id="@+id/target_0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="0dip"
+        android:minHeight="0dip"
+        android:text=""
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="292dp" />
+
+    <Button
         android:id="@+id/targetBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
