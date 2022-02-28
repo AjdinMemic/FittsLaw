@@ -272,7 +272,7 @@ public class CalibrationActivity extends AppCompatActivity {
 
 
         targetBar = findViewById(R.id.target_0);
-        targetCircle = findViewById(R.id.round_Target);
+        targetCircle = findViewById(R.id.target_0);
 
 
         if(oneD){
@@ -371,8 +371,7 @@ public class CalibrationActivity extends AppCompatActivity {
                 if(oneD) {
                     targetBar.setBackgroundColor(SUCCESS_COLOR_TARGET);
                 }else{
-                    GradientDrawable circle = (GradientDrawable) targetCircle.getBackground().getCurrent();
-                    circle.setColor(SUCCESS_COLOR_TARGET);
+                    targetCircle.setBackgroundColor(SUCCESS_COLOR_TARGET);
                 }
                 //DATA
                 score++;
@@ -390,8 +389,7 @@ public class CalibrationActivity extends AppCompatActivity {
                 if(oneD) {
                     targetBar.setBackgroundColor(FAIL_COLOR_TARGET);
                 }else{
-                    GradientDrawable circle = (GradientDrawable) targetCircle.getBackground().getCurrent();
-                    circle.setColor(FAIL_COLOR_TARGET);
+                    targetCircle.setBackgroundColor(FAIL_COLOR_TARGET);
                 }
                 //DATA
                 data[INDEX_OF_Hit] = "0";
@@ -619,9 +617,7 @@ public class CalibrationActivity extends AppCompatActivity {
 
             data[INDEX_OF_CirclePosition] = side;
 
-            GradientDrawable d = (GradientDrawable) targetCircle.getBackground().getCurrent();
-            d.setColor(DEFAULT_COLOR_TARGET);
-            d.setSize((int) bar_height_pixel, (int) bar_height_pixel);
+           targetCircle.setBackgroundColor(DEFAULT_COLOR_TARGET);
 
 
             targetCircle.setX(targetXPosition_Circle);

@@ -133,14 +133,31 @@ public class MainActivity extends AppCompatActivity {
 
     //W Levels
     // diameter of the target circle
+
+    //width
     private static final  float W1 = 2.4f;
-    private static final  float W2 = 4.8f;
-    private static final  float W3 = 7.2f;
-    private static final  float W4 = 10.0f;
-    private static final  float W5 = 15.0f;
-    private static final  float W6 = 20.0f;
-    private static final  float W7 = 25.0f;
-    private static final float[] W = {W1, W2, W3, W4, W5, W6, W7};
+    private static final  float W2 = 5.0f;
+    private static final  float W3 = 8.0f;
+    private static final  float W4 = 7.2f;
+    private static final  float W5 = 5.0f;
+    private static final  float W6 = 10.0f;
+    private static final  float W7 = 10.0f;
+    private static final  float W8 = 7.2f;
+    private static final  float W9 = 15.0f;
+
+    //heigh
+    private static final float H1 = 8.0f;
+    private static final float H2 = 2.4f;
+    private static final float H3 = 5.0f;
+    private static final float H4 = 7.2f;
+    private static final float H5 = 5.0f;
+    private static final float H6 = 2.4f;
+    private static final float H7 = 7.2f;
+    private static final float H8 = 5.0f;
+    private static final float H9 = 4.8f;
+
+    private static final float[] W = {W1, W2, W3, W4, W5, W6, W7,W8,W9};
+    private static final float[] H = {H1, H2, H3, H4, H5, H6, H7,H8,H9};
 
     /*float[] W0 = new float[]{2.4f, 4.8f, 7.2f, 10.0f, 15.0f, 20.0f, 25.0f};
     float[] W20 = new float[]{3.0f, 6.0f, 9.0f, 12.5f, 18.75f, 25.0f, 31.25f};
@@ -357,7 +374,7 @@ public class MainActivity extends AppCompatActivity {
         outlier_down = false;
         startBar = findViewById(R.id.startBtn);
         targetBar = findViewById(R.id.targetBtn);
-        targetCircle = findViewById(R.id.targetCircle);
+        targetCircle = findViewById(R.id.target_0);
         if(oneD){
             targetCircle.setVisibility(View.INVISIBLE);
         }else{
@@ -521,9 +538,9 @@ public class MainActivity extends AppCompatActivity {
            //** 2D
            }else{
                //CHANGE COLOR
-               GradientDrawable circle = (GradientDrawable) targetCircle.getBackground().getCurrent();
-               if(hit){ circle.setColor(SUCCESS_COLOR_TARGET);}
-               else{ circle.setColor(FAIL_COLOR_TARGET);}
+               targetCircle.getBackground().getCurrent();
+               if(hit){ targetCircle.setBackgroundColor(SUCCESS_COLOR_TARGET);}
+               else{ targetCircle.setBackgroundColor(FAIL_COLOR_TARGET);}
 
                //CALCULATE DISTANCE
                distance_y = target_center_y - event.getRawY();
@@ -987,11 +1004,12 @@ public class MainActivity extends AppCompatActivity {
                     - Math.max((int) target_width_pixel, (int) thumbWidth))
                     + boarder_px + (Math.max(0, ((int) thumbWidth-(int) target_width_pixel)/2));
 
-            GradientDrawable circle = (GradientDrawable) targetCircle.getBackground().getCurrent();
-            circle.setColor(DEFAULT_COLOR_TARGET);
-            circle.setSize((int) target_width_pixel, (int) target_width_pixel);
 
-            targetCircle.setWidth((int) target_width_pixel);
+           targetCircle.setBackgroundColor(DEFAULT_COLOR_TARGET);
+           targetCircle.setWidth((int) target_width_pixel);
+           targetCircle.setHeight((int) target_width_pixel);
+
+            targetCircle.setWidth((int) target_width_pixel*2);
             targetCircle.setHeight((int) target_width_pixel);
             targetCircle.setX(targetXPosition_Circle);
             targetCircle.setY(targetPositionY);
