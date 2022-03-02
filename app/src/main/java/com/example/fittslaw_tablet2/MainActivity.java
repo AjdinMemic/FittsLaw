@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Vector;
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     private static int INDEX_OF_AXIS_S_Up = 42;
     private static int INDEX_OF_AXIS_AVG_L = 43;
     private static int INDEX_OF_AXIS_AVG_S = 44;
-
+    private static int INDEX_WH = 0;
 
     //Settings ---------------------------------------------------
     //private static final int START_BAR_WIDE = 6; //in mm
@@ -158,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final float[] W = {W1, W2, W3, W4, W5, W6, W7,W8,W9};
     private static final float[] H = {H1, H2, H3, H4, H5, H6, H7,H8,H9};
+    private static float[][] WH = new float[W.length][2];
 
     /*float[] W0 = new float[]{2.4f, 4.8f, 7.2f, 10.0f, 15.0f, 20.0f, 25.0f};
     float[] W20 = new float[]{3.0f, 6.0f, 9.0f, 12.5f, 18.75f, 25.0f, 31.25f};
@@ -249,6 +251,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        createWH();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -495,6 +498,13 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    private void createWH() {
+        for(int i=0;i<WH.length;i++){
+                WH[i][0]=W[i];
+                WH[i][1]=H[i];
+        }
     }
 
 
@@ -847,7 +857,29 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("********   Vector: " + ((float[])blockVector.elementAt(trailIndex))[0] + ", " + ((float[])blockVector.elementAt(trailIndex))[1] + ", " + ((float[])blockVector.elementAt(trailIndex))[2]);
 
         int myA = (int)((float[])blockVector.elementAt(trailIndex))[0];
-        float myW = ((float[])blockVector.elementAt(trailIndex))[1];
+
+        int randomInt=0;
+        boolean notDuplicate=false;
+
+        while(notDuplicate==false) {
+
+            if(randomChosen.size()==W.length){
+                randomChosen.clear();
+            }
+
+            int len = WH.length;
+            Random random = new Random();
+            randomInt = random.nextInt(len);
+
+            if(containtsDup(randomInt)){
+                notDuplicate=false;
+            }else{notDuplicate=true;}
+
+            randomChosen.add(randomInt);
+        }
+
+        float myW = WH[randomInt][0];
+        float myH = WH[randomInt][1];
 
         String myStartPosition;
         if(((float[])blockVector.elementAt(trailIndex))[2] == 0){
@@ -867,21 +899,32 @@ public class MainActivity extends AppCompatActivity {
         log[8] = myW_String.replace('.', ',');
 
 
-        setButtonParameters(myA, myW, myStartPosition);
+        setButtonParameters(myA, myW,myH, myStartPosition);
 
         started = false;
 
+    }
+
+    private static LinkedList<Integer> randomChosen=new LinkedList();
+
+    private boolean containtsDup(int randomInt) {
+        boolean retVal=false;
+        for(int i:randomChosen){
+            if(randomInt==i){retVal= true;}
+        }
+
+        return retVal;
     }
 
     private List<Vector> makeBlockVectors(){
 
         List<List<float[]>> listOptionlistforAWCombi = new ArrayList<>();
         for (int distance : A) {
-            for (float size : W) {
+           for(int i=0;i<W.length;i++){
                 List<float[]> optionsforAWCombi = new ArrayList<>();
                 //to make direction equal
                 for (int k = 0; k < 2; k++) {
-                    float[] combi = {distance, size, k};
+                    float[] combi = {distance, W[i],H[i], k};
                     optionsforAWCombi.add(combi);
                 }
                 listOptionlistforAWCombi.add(optionsforAWCombi);
@@ -913,7 +956,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void setButtonParameters(int a, float w, String startP){
+    private void setButtonParameters(int a, float w,float h,String startP){
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -932,6 +975,8 @@ public class MainActivity extends AppCompatActivity {
                 getResources().getDisplayMetrics());
         data[INDEX_OF_W_px]= String.valueOf((int)target_width_pixel);
         log[10] = String.valueOf((int)target_width_pixel);
+
+        float target_height_pixel = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, h,getResources().getDisplayMetrics());
 
         float distance_pixel =  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, a,
                 getResources().getDisplayMetrics());
@@ -1009,8 +1054,8 @@ public class MainActivity extends AppCompatActivity {
            targetCircle.setWidth((int) target_width_pixel);
            targetCircle.setHeight((int) target_width_pixel);
 
-            targetCircle.setWidth((int) target_width_pixel*2);
-            targetCircle.setHeight((int) target_width_pixel);
+            targetCircle.setWidth((int) target_width_pixel);
+            targetCircle.setHeight((int) target_height_pixel);
             targetCircle.setX(targetXPosition_Circle);
             targetCircle.setY(targetPositionY);
 
